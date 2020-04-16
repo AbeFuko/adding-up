@@ -36,6 +36,8 @@ rl.on('line', (lineString) => {
 });
 //Streamに情報を流し始める処理
 rl.resume();
+
+//"line"イベントが発生したら関数を呼ぶ
 rl.on('close', () => {
     for (let pair of map) {
         const value = pair[1];
@@ -44,8 +46,10 @@ rl.on('close', () => {
     const rankingArray = Array.from(map).sort((pair1, pair2) => {
         return pair2[1].change - pair1[1].change;
     });
-    const rankingStrings = rankingArray.map((pair) => {
-        return pair[0] + ':' + pair[1].popu10 + '=>' + pair[1].popu15 + ' 変化率:' + pair[1].change;
+    const rankingStrings = rankingArray.map((pair, i) => {
+        let per = (pair[1].change - 1)*100
+        return `[${i+1}位]${pair[0]}: ${pair[1].popu10}人=>${pair[1].popu15}人 / 変化率: ${per.toFixed(2)}%`;
+        //.toFixed(fractionDigits):指定桁数の小数点表示にするメソッド
     });
     console.log(rankingStrings);
 });
